@@ -12,6 +12,25 @@ public class ProdConSync {
 
     static final int N = 100;   //Number of slots in buffer
 
+    //Method to create a new buffer array
+    public static char[] createBuffer(int bufferSize){
+
+        //Declare a new buffer array
+        char newBuffer[] = new char[bufferSize];
+
+
+        //Initialize all slots of buffer to null
+        for (int i = 0; i < bufferSize; i++){
+            newBuffer[i] = '\u0000';
+        }
+
+        System.out.println("TEST - 1");
+
+        //return the newly created buffer array
+        return newBuffer;
+
+    }   //End of createBuffer method
+
     //Main Method
     public static void main (String args[]) {
 
@@ -21,25 +40,37 @@ public class ProdConSync {
 
         //Create new Semaphore object, full
         //Initializing to 0, meaning used for execution ordering
-        Semaphore full= new Semaphore (0);
+        Semaphore full = new Semaphore (0);
 
         //Create new Semaphore object, empty
         //Initializing to N, meaning if N > 1, it is a counting semaphore
         Semaphore empty = new Semaphore (N);
 
+
+        //Creates a new buffer to be used by the producer and consumer
+        char[] bufferArray = createBuffer(N);
+
+        System.out.println("TEST0");
+
+
         //Create new Producer object
-        Producer prod= new Producer (mutex, full, empty);
+        Producer prod = new Producer (mutex, full, empty, bufferArray);
+
+        System.out.println("TEST2");
+
 
         //Create new Consumer object
-        Consumer cons = new Consumer (mutex, full, empty);
+        Consumer cons = new Consumer (mutex, full, empty, bufferArray);
 
-        //Run Prouder object's run method
+        System.out.println("TEST3");
+
+
+        //Run Producer object's start method
         prod.start() ;
 
-        //Run Consumer object's run method
+        //Run Consumer object's start method
         cons.start();
-
 
     }   //End of main method
 
-}//End of class ProdConSync
+}   //End of class ProdConSync
